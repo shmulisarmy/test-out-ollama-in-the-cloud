@@ -26,4 +26,4 @@ async def query(request: QueryRequest):
 if __name__ == "__main__":
     import uvicorn
     port = 9000
-    uvicorn.run("main:app", reload=True, port=port)
+    uvicorn.run("main:app", host="0.0.0.0", reload=True, port=port)
