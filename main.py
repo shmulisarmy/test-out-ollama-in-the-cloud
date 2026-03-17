@@ -1,3 +1,4 @@
+import subprocess
 from fastapi import FastAPI
 from pydantic import BaseModel
 import httpx
@@ -25,13 +26,12 @@ class QueryRequest(BaseModel):
 
 @app.post("/query")
 async def query(request: QueryRequest):
-    async with httpx.AsyncClient(timeout=120) as client:
-        response = await client.post(
-            f"{OLLAMA_URL}/api/generate",
-            json={"model": gemma_model, "prompt": request.prompt, "stream": False},
-        )
-        response.raise_for_status()
-        return response.json()
+    result = subprocess.run(
+        ["ollama", "run", gemma_model, request.prompt],
+        capture_output=True,
+        text=True
+    )
+    return {"status": "ok", "response": result.stdout.strip()}
 
 
 if __name__ == "__main__":
