@@ -6,7 +6,6 @@ import os
 import ollama
 
 app = FastAPI()
-OLLAMA_URL = "http://localhost:11434"
 gemma_model = "gemma3:270m"
 
 async def make_sure_i_have_ollama_gemma():
@@ -27,6 +26,7 @@ class QueryRequest(BaseModel):
 
 @app.post("/query")
 async def query(request: QueryRequest):
+    make_sure_i_have_ollama_gemma()
     response = ollama.chat(
         model=gemma_model,
         messages=[
