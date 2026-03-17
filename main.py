@@ -26,12 +26,13 @@ class QueryRequest(BaseModel):
 
 @app.post("/query")
 async def query(request: QueryRequest):
-    result = subprocess.run(
-        ["ollama", "run", gemma_model, request.prompt],
-        capture_output=True,
-        text=True
+    response = ollama.chat(
+        model=gemma_model,
+        messages=[
+            {"role": "user", "content": request.prompt}
+        ]
     )
-    return {"status": "ok", "response": result.stdout.strip()}
+    return {"status": "ok", "response": response["message"]["content"]}
 
 
 if __name__ == "__main__":
