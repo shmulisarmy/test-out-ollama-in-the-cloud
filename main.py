@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import httpx
 import os
+import ollama
 
 app = FastAPI()
 OLLAMA_URL = "http://localhost:11434"
